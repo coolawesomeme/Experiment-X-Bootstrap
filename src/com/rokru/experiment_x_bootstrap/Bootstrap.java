@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +20,7 @@ public class Bootstrap {
 
 	private static long timer = System.currentTimeMillis();
 	private static JFrame splash;
+	private static String version = "1.0.0";
 	private static URL update_file;
 	private static URL download_url;
 	private static String latest_version = "0.0.1";
@@ -30,6 +32,7 @@ public class Bootstrap {
 		System.out.println("[BOOTSTRAP] Bootstrap initializing...");
 		
 		splashscreen();
+		createBootstrapPathFile();
 		
 		File f = new File(getLauncherDirectory() + "/truelauncher");
 		if(f.mkdirs()){
@@ -67,10 +70,10 @@ public class Bootstrap {
 				System.out.println("[BOOTSTRAP] Download URL: " + download_url.toString());
 			}
 			s.close();
-			File last_path = new File(getLauncherDirectory() + "/lastpath.loc");
+			File launcher_path = new File(getLauncherDirectory() + "/launcher_path.loc");
 			String currentVersion = "0.0.0";
-			if(last_path.exists()){
-				URL lastpath = last_path.toURI().toURL();
+			if(launcher_path.exists()){
+				URL lastpath = launcher_path.toURI().toURL();
 				Scanner a = new Scanner(lastpath.openStream());
 				String pathraw = a.nextLine();
 				if (pathraw.contains("|")) {
@@ -186,6 +189,21 @@ public class Bootstrap {
 			return System.getProperty("user.home") + "/.experimentx/launcher";
 		}else{
 			return ".experimentx/launcher";
+		}
+	}
+	
+	private static void createBootstrapPathFile(){
+		try {
+			File q = new File(getLauncherDirectory() + "/bootstrap_path.loc");
+			q.createNewFile();
+			FileWriter fwrite = new FileWriter(q);
+			fwrite.write( JarPath.determineJarFolder() + "|" + JarPath.determineJarPath() + "|" + version);
+			System.out.println("[BOOTSTRAP] Bootstrap Folder: " + JarPath.determineJarFolder());
+			System.out.println("[BOOTSTRAP] Bootstrap Path: " + JarPath.determineJarPath());
+			fwrite.flush();
+			fwrite.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
