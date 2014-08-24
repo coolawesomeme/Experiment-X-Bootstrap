@@ -25,7 +25,7 @@ public class Bootstrap {
 	private static URL update_file;
 	private static URL download_url;
 	private static String latest_version = "0.0.1";
-	private static ArrayList<String> arguments;
+	private static ArrayList<String> arguments = new ArrayList<String>();
 	
 	public static void main(String[] args) {
 		for(String s : args){
