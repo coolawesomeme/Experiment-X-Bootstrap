@@ -100,7 +100,6 @@ public class Bootstrap {
 
 	private static void downloadUpdate() {
 		long downloadTimer = System.currentTimeMillis();
-		System.out.println("[BOOTSTRAP] Downloading...");
 		URLConnection conn;
 		try {
 			conn = download_url.openConnection();
@@ -108,10 +107,11 @@ public class Bootstrap {
     		FileOutputStream out = new FileOutputStream(getLauncherDirectory() + "/truelauncher/ExperimentXLauncher.jar");
     		byte[] b = new byte[1024];
     		int count;
+    		System.out.println("[BOOTSTRAP] Downloading...");
     		while ((count = in.read(b)) >= 0) {
         		out.write(b, 0, count);
     		}
-    		System.out.println("Jar downloaded in " + (System.currentTimeMillis() - downloadTimer) + " ms.");
+    		System.out.println("[BOOTSTRAP] Jar downloaded in " + (System.currentTimeMillis() - downloadTimer) + " ms.");
     		out.flush(); out.close(); in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -141,7 +141,7 @@ public class Bootstrap {
 					splash.dispose();
 				
 				System.out.println("[BOOTSTRAP] Launcher jar started.");
-				System.out.println("[BOOTSTRAP] " + (System.currentTimeMillis() - timer) + " ms passed.");
+				System.out.println("[BOOTSTRAP] " + (System.currentTimeMillis() - timer) + " ms passed since bootstrap start.");
 				
 				if(arguments.length > 0){
 					System.out.println("[BOOTSTRAP] Argument(s): " + s);
@@ -176,7 +176,8 @@ public class Bootstrap {
 				    } catch (IllegalThreadStateException t) {}
 				}
 			}else{
-				System.err.println("[BOOTSTRAP] True Launcher not found. Please restart.");
+				System.err.println("[BOOTSTRAP] True Launcher not found. Queuing download.");
+				downloadUpdate();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
