@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -24,10 +25,15 @@ public class Bootstrap {
 	private static URL update_file;
 	private static URL download_url;
 	private static String latest_version = "0.0.1";
-	private static String[] arguments;
+	private static ArrayList<String> arguments;
 	
 	public static void main(String[] args) {
-		arguments = args;
+		for(String s : args){
+			arguments.add(s);
+		}if(arguments.contains("-v") || arguments.contains("-version")){
+			returnVersionPlain();
+			System.exit(0);
+		}
 		System.out.println("---------------------------------------------");
 		System.out.println("[BOOTSTRAP] Bootstrap initializing...");
 		
@@ -39,6 +45,24 @@ public class Bootstrap {
 			System.out.println("[BOOTSTRAP] Directory made.");
 		}
 		checkForLauncherUpdate();
+	}
+
+	private static void returnVersionPlain() {
+		File launcher_path = new File(getLauncherDirectory() + "/launcher_path.loc");
+		String currentVersion = "0.0.0";
+		if(launcher_path.exists()){
+			try{
+			URL lastpath = launcher_path.toURI().toURL();
+			Scanner a = new Scanner(lastpath.openStream());
+			String pathraw = a.nextLine();
+			if (pathraw.contains("|")) {
+				String[] info = pathraw.split("\\|", -1);
+				currentVersion = info[2];
+			}
+			a.close();
+			}catch(Exception e){}
+		}
+		System.out.println(currentVersion);
 	}
 
 	private static void splashscreen() {
@@ -124,11 +148,11 @@ public class Bootstrap {
 		try {
 			if(f.exists()){
 				String s = "";
-				for(int i = 0; i < arguments.length; i++){
+				for(int i = 0; i < arguments.size(); i++){
 					if(i == 0){
-						s = arguments[i];
+						s = arguments.get(i);
 					}else{
-						s = s + " " + arguments[i];
+						s = s + " " + arguments.get(i);
 					}
 				}
 
@@ -143,7 +167,7 @@ public class Bootstrap {
 				System.out.println("[BOOTSTRAP] Launcher jar started.");
 				System.out.println("[BOOTSTRAP] " + (System.currentTimeMillis() - timer) + " ms passed since bootstrap start.");
 				
-				if(arguments.length > 0){
+				if(!arguments.isEmpty()){
 					System.out.println("[BOOTSTRAP] Argument(s): " + s);
 				}				
 				System.out.println("---------------------------------------------");
