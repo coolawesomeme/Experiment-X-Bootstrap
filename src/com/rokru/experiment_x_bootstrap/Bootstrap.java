@@ -74,7 +74,7 @@ public class Bootstrap {
 		splash.setUndecorated(true);
 		splash.setAlwaysOnTop(true);
 		splash.setLocationRelativeTo(null);
-		splash.setBackground(new Color(0, 0, 0, 0));
+		splash.setBackground(new Color(0, 0, 0, 0.5f));
 		splash.setIconImage(new ImageIcon(Bootstrap.class.getResource("/images/app_icon.png")).getImage());
 		splash.setVisible(true);
 		
