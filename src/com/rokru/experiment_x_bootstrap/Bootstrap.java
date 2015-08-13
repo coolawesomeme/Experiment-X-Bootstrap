@@ -193,14 +193,14 @@ public class Bootstrap {
 				            System.exit(0);
 				        }else{
 				        	System.out.println("---------------------------------------------");
-				        	System.err.println("[BOOTSTRAP] Error! Check true launcher at:");
+				        	System.err.println("[BOOTSTRAP] Error! Check launcher at:");
 				        	System.err.println(f.getAbsolutePath());
 				        	System.exit(1);
 				        }
 				    } catch (IllegalThreadStateException t) {}
 				}
 			}else{
-				System.err.println("[BOOTSTRAP] True Launcher not found. Queuing download.");
+				System.err.println("[BOOTSTRAP] Launcher not found. Queuing download.");
 				downloadUpdate();
 			}
 		} catch (Exception e) {
